@@ -1,163 +1,161 @@
-# WanderLust 🏡✈️
+# Wander Lust 🏡✈️
 
-A full-stack web application for discovering and sharing unique places to stay around the world. WanderLust is an Airbnb-inspired platform where users can browse listings, create their own properties, leave reviews, and connect with fellow travelers.
+A full-stack, modern web application for discovering and listing unique places to stay across India and beyond. Wander Lust is a premium Airbnb-inspired platform where users can browse stunning properties, hosts can manage their listings end-to-end, and guests can leave reviews — all wrapped in a sleek, glassmorphism-inspired UI.
 
 ## 🌟 Features
 
-- **User Authentication**: Secure signup/login system with Passport.js and local strategy
-- **Property Listings**: Browse, create, edit, and delete accommodation listings
-- **Image Upload**: Upload property images using Cloudinary for optimized storage
-- **Reviews & Ratings**: Leave reviews and rate properties (1-5 stars)
-- **Authorization**: Only listing owners can edit or delete their properties
-- **Session Management**: Persistent sessions using MongoDB store
-- **Flash Messages**: User-friendly feedback for all actions
-- **Responsive Design**: Mobile-friendly interface
+- **Role-Based Experience**: Separate and distinct flows for **Guests** and **Hosts**
+- **User Authentication**: Secure signup/login with Passport.js and persistent MongoDB sessions
+- **Property Listings**: Browse, search, and view detailed accommodation listings
+- **Host Dashboard**: Hosts can create, edit, and permanently delete their own listings
+- **Cloudinary Image Management**: Automatic upload _and_ deletion of property images on Cloudinary
+- **Reviews & Ratings**: Guests can leave star-rated reviews; only review authors can delete them
+- **Advanced Booking UX**: Interactive date picker with check-in/check-out range and a custom Guest Selector (Adults, Kids, Infants)
+- **Interactive Pricing**: Real-time price breakdown with tooltips on hover (Base fare, Service fee, Total)
+- **Indian Rupee (₹) Localization**: All prices formatted in `en-IN` locale
+- **Centralized Auth Guards**: Frontend `useAuthGuard` hook mirrors backend middleware to prevent unauthorized access with instant toast notifications
+- **Toast Notifications**: Context-aware feedback for every user action (bottom-right, color-coded)
+- **Responsive Design**: Premium mobile-to-desktop responsive layout
 
 ## 🛠️ Tech Stack
 
 ### Backend
 
-- **Node.js** (v24.9.0)
-- **Express.js** (v5.2.1) - Web framework
-- **MongoDB** with **Mongoose** (v9.0.1) - Database and ODM
-- **Passport.js** - Authentication middleware
-- **Express Session** - Session management with MongoDB store
+| Technology                              | Purpose                        |
+| --------------------------------------- | ------------------------------ |
+| **Node.js** (v24.9.0)                   | Runtime environment            |
+| **Express.js** (v5.x)                   | Web framework                  |
+| **MongoDB** + **Mongoose** (v9.x)       | Database and ODM               |
+| **Passport.js** (local strategy)        | Authentication                 |
+| **express-session** + **connect-mongo** | Persistent session storage     |
+| **Cloudinary** + **Multer**             | Image upload and cloud storage |
+| **CORS**                                | Cross-origin request handling  |
 
 ### Frontend
 
-- **EJS** - Templating engine
-- **EJS Mate** - Layout support for EJS
-- **Bootstrap** (CSS framework)
-- **Custom CSS** - Additional styling
-
-### Cloud Services
-
-- **Cloudinary** - Image hosting and optimization
-- **MongoDB Atlas** - Cloud database (recommended)
-
-### Security & Validation
-
-- **Joi** - Schema validation
-- **Connect Flash** - Flash messages
-- **Passport Local Mongoose** - Password hashing and salting
+| Technology                    | Purpose                        |
+| ----------------------------- | ------------------------------ |
+| **React 19** + **Vite**       | UI framework and build tool    |
+| **Tailwind CSS 4.x**          | Utility-first styling          |
+| **React Router 7.x**          | Client-side routing            |
+| **Axios**                     | HTTP client                    |
+| **React Hook Form** + **Zod** | Form management and validation |
+| **react-datepicker**          | Booking date selection         |
+| **react-toastify**            | Toast notifications            |
 
 ## 📁 Project Structure
 
-```
+```bash
 Wander Lust/
-├── app.js                 # Main application entry point
-├── package.json           # Project dependencies
-├── Schema.js              # Joi validation schemas
-├── middlewares.js         # Custom middleware functions
-├── cloudConfig.js         # Cloudinary configuration
-├── controllers/           # Route controllers (MVC pattern)
-│   ├── listings.js
-│   ├── reviews.js
-│   └── users.js
-├── models/                # Mongoose models
-│   ├── Listing.js
-│   ├── Review.js
-│   └── User.js
-├── routes/                # Express routes
-│   ├── listings.js
-│   ├── reviews.js
-│   └── users.js
-├── views/                 # EJS templates
-│   ├── layouts/
-│   ├── listings/
-│   ├── users/
-│   └── includes/
-├── public/                # Static assets
-│   ├── css/
-│   └── Js/
-├── utility/               # Helper utilities
-│   ├── ExpressError.js
-│   └── WrapAsync.js
-└── init/                  # Database initialization scripts
-    ├── data.js
-    └── init.js
+├── backend/
+│   ├── app.js                 # Main server entry point
+│   ├── middlewares.js         # isLoggedIn, isListingOwner, isReviewAuthor
+│   ├── controllers/           # Route logic (listings, reviews, users)
+│   ├── models/                # Mongoose schemas (Listing, Review, User, Booking)
+│   ├── routes/                # Express routers
+│   ├── utility/               # cloudConfig.js, ErrorHandling.js
+│   └── init/                  # DB seed scripts
+│
+└── frontend/
+    ├── src/
+    │   ├── App.jsx            # Route definitions
+    │   ├── components/        # Navbar, Footer, Card, GuestSelector, DatePicker
+    │   ├── hooks/             # useAuthGuard (centralized route protection)
+    │   ├── pages/
+    │   │   ├── auth/          # Login, Signup
+    │   │   └── listings/      # ListingsIndex, DisplayListing, NewListing, EditListing, MyListings
+    │   └── index.css          # Global styles
+    └── vite.config.js
 ```
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v24.9.0 or higher)
-- MongoDB (local installation or MongoDB Atlas account)
-- Cloudinary account (for image uploads)
+- Node.js (v24.9.0+)
+- MongoDB (local or Atlas)
+- Cloudinary account
 
-### Installation
+### Backend Setup
 
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/aryan-anand-sde/Wander-Lust.git
-   cd Wander-Lust
-   ```
-
-2. **Install dependencies**
+1. **Navigate to the backend folder and install dependencies**:
 
    ```bash
+   cd backend
    npm install
    ```
 
-3. **Set up environment variables**
-
-   Create a `.env` file in the root directory:
+2. **Create a `.env` file** inside `backend/`:
 
    ```env
    MONGODB_URL=your_mongodb_connection_string
    SECRET=your_session_secret_key
-   CLOUD_NAME=your_cloudinary_cloud_name
-   CLOUD_API_KEY=your_cloudinary_api_key
-   CLOUD_API_SECRET=your_cloudinary_api_secret
+   FRONTEND_URL=http://localhost:5173
+   CLOUDINARY_NAME=your_cloudinary_name
+   CLOUDINARY_API_KEY=your_cloudinary_api_key
+   CLOUDINARY_API_SECRET=your_cloudinary_api_secret
    ```
 
-4. **Initialize the database (optional)**
-
-   If you want to seed the database with sample data:
+3. **Seed the database (optional)**:
 
    ```bash
    node init/init.js
    ```
 
-5. **Start the application**
+4. **Start the server**:
 
    ```bash
    node app.js
    ```
 
-6. **Access the application**
+   The API will be running at `http://localhost:3000`.
 
-   Open your browser and navigate to:
+### Frontend Setup
 
+1. **Navigate to the frontend folder and install dependencies**:
+
+   ```bash
+   cd frontend
+   npm install
    ```
-   http://localhost:3000
+
+2. **Create a `.env` file** inside `frontend/`:
+
+   ```env
+   VITE_BACKEND_URL=http://localhost:3000
    ```
 
-## 📝 Usage
+3. **Start the development server**:
 
-### For Users
+   ```bash
+   npm run dev
+   ```
 
-1. **Sign Up**: Create a new account to get started
-2. **Browse Listings**: View all available properties
-3. **View Details**: Click on any listing to see full details and reviews
-4. **Leave Reviews**: Share your experience with ratings and comments
-
-### For Property Owners
-
-1. **Create Listing**: Add your property with images, description, and pricing
-2. **Manage Listings**: Edit or delete your own properties
-3. **Monitor Reviews**: See what guests are saying about your property
+   The app will be available at `http://localhost:5173`.
 
 ## 🔒 Security Features
 
-- Password hashing using passport-local-mongoose
-- Session-based authentication
-- CSRF protection
-- HTTP-only cookies
-- Input validation with Joi
-- Authorization checks for protected routes
+- Password hashing via `passport-local-mongoose`
+- Session-based authentication with HttpOnly cookies (7-day expiry)
+- Backend authorization middleware (`isLoggedIn`, `isListingOwner`, `isReviewAuthor`) returning proper HTTP status codes (401, 403)
+- Frontend `useAuthGuard` hook prevents unauthorized page access client-side
+- Role-based UI rendering — hosts and guests see different interfaces
+
+## 📝 Usage
+
+### As a Guest
+
+1. **Sign Up / Log In** to access the platform
+2. **Browse Listings** on the homepage
+3. **View Details** — see pricing, location, amenities, and reviews
+4. **Leave Reviews** with a star rating and comment
+
+### As a Host
+
+1. **Sign Up** with the Host role
+2. **Create a New Listing** with title, description, price, location, and an image
+3. **Manage Your Listings** from the "My Listings" dashboard
+4. **Edit or Delete** your listings — deleted images are automatically removed from Cloudinary
 
 ## 🤝 Contributing
 
@@ -173,16 +171,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 This project is licensed under the ISC License.
 
-## 👤 Author
-
-**Aryan Anand**
+## 👤 Author : Aryan Anand
 
 - GitHub: [@aryan-anand-sde](https://github.com/aryan-anand-sde)
 
 ## 🙏 Acknowledgments
 
 - Inspired by Airbnb's user interface and functionality
-- Built as part of web development learning journey
+- Built as a full-stack web development project
 - Thanks to the open-source community for amazing tools and libraries
 
 ---

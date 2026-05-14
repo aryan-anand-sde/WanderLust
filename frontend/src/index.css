@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-blue-50: var(--color5);
+  --color-blue-500: var(--color4);
+  --color-blue-600: var(--color3);
+  --color-blue-700: var(--color2);
+
+  --color-indigo-50: var(--color5);
+  --color-indigo-600: var(--color1);
+  --color-indigo-700: var(--color1);
+}
+
+:root {
+  --color1: #0f2854;
+  --color2: #1c4d8d;
+  --color3: #2a6eb0;
+  --color4: #4988c4;
+  --color5: #bde8f5;
+}
