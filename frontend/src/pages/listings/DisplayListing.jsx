@@ -51,6 +51,13 @@ const DisplayListing = () => {
     fetchData();
   }, [id]);
 
+  // Derived: has the current user already reviewed this listing?
+  const hasReviewed =
+    currentUser &&
+    listing?.reviews?.some(
+      (r) => String(r.author?._id || r.author) === String(currentUser._id),
+    );
+
   const handleReviewChange = (e) => {
     const { name, value } = e.target;
     setReviewData((prev) => ({ ...prev, [name]: value }));
@@ -269,7 +276,14 @@ const DisplayListing = () => {
                           {review.author?.name || "User"}
                         </h4>
                         <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider">
-                          {new Date(review.createdAt).toLocaleDateString()}
+                          {new Date(review.createdAt).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            },
+                          )}
                         </p>
                       </div>
                     </div>
@@ -308,52 +322,84 @@ const DisplayListing = () => {
               </div>
             )}
 
-            {/* Add Review Form */}
+            {/* Add Review Form / Already Reviewed Notice */}
             {currentUser && currentUser.role !== "host" && (
-              <div className="mt-12 bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-(--color3) to-(--color5)"></div>
-                <h3 className="text-2xl font-black text-(--color1) mb-6">
-                  Leave a Review
-                </h3>
-                <form onSubmit={handleReviewSubmit} className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
-                      Rating
-                    </label>
-                    <select
-                      name="rating"
-                      value={reviewData.rating}
-                      onChange={handleReviewChange}
-                      className="w-full sm:w-64 rounded-xl border-gray-300 shadow-sm focus:border-(--color3) focus:ring-(--color3) p-4 border-2 bg-gray-50 font-bold text-gray-700 outline-none transition-colors"
-                    >
-                      <option value="5">⭐⭐⭐⭐⭐ - Amazing</option>
-                      <option value="4">⭐⭐⭐⭐ - Very Good</option>
-                      <option value="3">⭐⭐⭐ - Average</option>
-                      <option value="2">⭐⭐ - Not Good</option>
-                      <option value="1">⭐ - Terrible</option>
-                    </select>
+              <div className="mt-12">
+                {hasReviewed ? (
+                  <div className="bg-amber-50 border border-amber-200 p-6 rounded-3xl flex items-start gap-4">
+                    <div className="shrink-0 w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2.5"
+                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-black text-amber-800 text-lg mb-1">
+                        You've already reviewed this place
+                      </h4>
+                      <p className="text-amber-700 font-medium text-sm leading-relaxed">
+                        To write a new review, please delete your existing one
+                        first using the <strong>Delete</strong> button on your
+                        review above.
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
-                      Your Experience
-                    </label>
-                    <textarea
-                      name="comment"
-                      rows="4"
-                      value={reviewData.comment}
-                      onChange={handleReviewChange}
-                      required
-                      className="w-full rounded-xl border-gray-300 shadow-sm focus:border-(--color3) focus:ring-(--color3) p-4 border-2 bg-gray-50 placeholder-gray-400 outline-none transition-colors"
-                      placeholder="What made your stay special?..."
-                    ></textarea>
+                ) : (
+                  <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-(--color3) to-(--color5)"></div>
+                    <h3 className="text-2xl font-black text-(--color1) mb-6">
+                      Leave a Review
+                    </h3>
+                    <form onSubmit={handleReviewSubmit} className="space-y-6">
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
+                          Rating
+                        </label>
+                        <select
+                          name="rating"
+                          value={reviewData.rating}
+                          onChange={handleReviewChange}
+                          className="w-full sm:w-64 rounded-xl border-gray-300 shadow-sm focus:border-(--color3) focus:ring-(--color3) p-4 border-2 bg-gray-50 font-bold text-gray-700 outline-none transition-colors"
+                        >
+                          <option value="5">⭐⭐⭐⭐⭐ - Amazing</option>
+                          <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                          <option value="3">⭐⭐⭐ - Average</option>
+                          <option value="2">⭐⭐ - Not Good</option>
+                          <option value="1">⭐ - Terrible</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
+                          Your Experience
+                        </label>
+                        <textarea
+                          name="comment"
+                          rows="4"
+                          value={reviewData.comment}
+                          onChange={handleReviewChange}
+                          required
+                          className="w-full rounded-xl border-gray-300 shadow-sm focus:border-(--color3) focus:ring-(--color3) p-4 border-2 bg-gray-50 placeholder-gray-400 outline-none transition-colors"
+                          placeholder="What made your stay special?..."
+                        ></textarea>
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full sm:w-auto bg-(--color1) text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-(--color2) transition-all transform hover:-translate-y-1 shadow-[0_10px_20px_-10px_rgba(15,40,84,0.5)]"
+                      >
+                        Post Review
+                      </button>
+                    </form>
                   </div>
-                  <button
-                    type="submit"
-                    className="w-full sm:w-auto bg-(--color1) text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-(--color2) transition-all transform hover:-translate-y-1 shadow-[0_10px_20px_-10px_rgba(15,40,84,0.5)]"
-                  >
-                    Post Review
-                  </button>
-                </form>
+                )}
               </div>
             )}
           </section>
