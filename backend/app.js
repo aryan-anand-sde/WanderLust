@@ -11,6 +11,7 @@ import usersRouter from "./routes/users.js";
 import methodOverride from "method-override";
 import reviewsRouter from "./routes/reviews.js";
 import listingsRouter from "./routes/listings.js";
+import bookingsRouter from "./routes/bookings.js";
 
 dotenv.config();
 
@@ -72,7 +73,9 @@ app.use((req, res, next) => {
 
 app.use("/", usersRouter);
 app.use("/listings", listingsRouter);
-app.use("/listings/:id", reviewsRouter);
+app.use("/bookings", bookingsRouter);
+app.use("/listings/:id/reviews", reviewsRouter);
+app.use("/listings/:id/bookings", bookingsRouter);
 
 app.use((error, req, res, next) => {
   let { status = 500, message = "Something went wrong" } = error;
