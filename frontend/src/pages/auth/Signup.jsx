@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupUser } from "../../api/authApi";
+import { signupUser } from "../../api/auth";
 
 const signupSchema = z.object({
   name: z.string().nonempty({ message: "Name is required" }),
