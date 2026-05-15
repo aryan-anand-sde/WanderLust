@@ -48,6 +48,16 @@ const useAuthGuard = ({
           navigate(`/listings/${listing._id}`);
         }
       }
+    } else if (require === "guestOnly") {
+      if (!user) {
+        toast.error("Please log in to continue.", { toastId: "auth-loggedin" });
+        navigate("/login");
+      } else if (user.role === "host") {
+        toast.warn("This page is only available for guests.", {
+          toastId: "auth-guest",
+        });
+        navigate("/");
+      }
     }
   }, [require, user, listing, loading, navigate]);
 
@@ -67,6 +77,8 @@ const useAuthGuard = ({
           isAuthorized = String(ownerId) === String(user._id);
         }
       }
+    } else if (require === "guestOnly") {
+      isAuthorized = !!user && user.role !== "host";
     }
   }
 
