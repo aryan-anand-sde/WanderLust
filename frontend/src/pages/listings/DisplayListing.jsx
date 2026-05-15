@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getListingById, deleteListing } from "../../api/listingsApi";
-import { addReview, deleteReview } from "../../api/reviewsApi";
+import { getListingById, deleteListing } from "../../api/listings";
+import { addReview, deleteReview } from "../../api/reviews";
 import DatePickerComponent from "../../components/DatePicker/DatePickerComponent";
 import GuestSelector from "../../components/GuestSelector/GuestSelector";
 
@@ -638,7 +638,31 @@ const DisplayListing = () => {
                 </div>
 
                 <div className="mt-8">
-                  <button className="w-full text-center bg-linear-to-r from-(--color1) to-(--color2) text-white font-black py-4 rounded-2xl shadow-[0_10px_25px_-5px_rgba(28,77,141,0.5)] transition-all transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-5px_rgba(28,77,141,0.6)] text-xl">
+                  <button
+                    onClick={() => {
+                      if (!currentUser) {
+                        navigate("/login");
+                        return;
+                      }
+                      navigate(`/listings/${listing._id}/book`, {
+                        state: {
+                          listing: {
+                            _id: listing._id,
+                            title: listing.title,
+                            location: listing.location,
+                            country: listing.country,
+                            price: listing.price,
+                            image: listing.image,
+                            owner: listing.owner,
+                          },
+                          checkIn: checkInDate?.toISOString(),
+                          checkOut: checkOutDate?.toISOString(),
+                          guests,
+                        },
+                      });
+                    }}
+                    className="w-full text-center bg-linear-to-r from-(--color1) to-(--color2) text-white font-black py-4 rounded-2xl shadow-[0_10px_25px_-5px_rgba(28,77,141,0.5)] transition-all transform hover:-translate-y-1 hover:shadow-[0_15px_30px_-5px_rgba(28,77,141,0.6)] text-xl"
+                  >
                     Reserve
                   </button>
                   <p className="text-center text-sm font-semibold text-gray-400 mt-4">

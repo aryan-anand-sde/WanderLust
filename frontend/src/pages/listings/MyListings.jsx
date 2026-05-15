@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import useAuthGuard from "../../hooks/useAuthGuard";
-import { getAllListings } from "../../api/listingsApi";
+import { getAllListings } from "../../api/listings";
 
 const MyListings = () => {
   const [listings, setListings] = React.useState([]);

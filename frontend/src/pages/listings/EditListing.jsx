@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import { getListingById, updateListing } from "../../api/listingsApi";
+import { getListingById, updateListing } from "../../api/listings";
 
 const editListingSchema = z.object({
   title: z.string().nonempty({ message: "Title is required" }),

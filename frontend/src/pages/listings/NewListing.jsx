@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useAuthGuard from "../../hooks/useAuthGuard";
-import { createListing } from "../../api/listingsApi";
+import { createListing } from "../../api/listings";
 
 const newListingSchema = z.object({
   title: z.string().nonempty({ message: "Title is required" }),
@@ -64,7 +64,8 @@ const NewListing = () => {
     } catch (error) {
       console.error("Failed to create listing:", error);
       const msg =
-        error.response?.data?.error || "Failed to create listing. Please try again.";
+        error.response?.data?.error ||
+        "Failed to create listing. Please try again.";
       setServerError(msg);
       toast.error(msg);
     }

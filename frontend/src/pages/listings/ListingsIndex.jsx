@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "../../components/Card";
-import { getAllListings } from "../../api/listingsApi";
+import { getAllListings } from "../../api/listings";
 
 const ListingsIndex = () => {
   const [listings, setListings] = React.useState([]);
