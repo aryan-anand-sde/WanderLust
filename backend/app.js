@@ -15,7 +15,7 @@ import bookingsRouter from "./routes/bookings.js";
 
 dotenv.config();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 const MongoDB_URL = process.env.MONGODB_URL;
