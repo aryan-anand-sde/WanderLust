@@ -10,6 +10,7 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
+
 const isListingOwner = (req, res, next) => {
   Listing.findById(req.params.id)
     .then((listing) => {
@@ -20,6 +21,20 @@ const isListingOwner = (req, res, next) => {
         return res
           .status(403)
           .json({ error: "You don't have permission to do that!" });
+      }
+      next();
+    })
+    .catch(next);
+};
+
+const isNotListingOwner = (req, res, next) => {
+  Listing.findById(req.params.id)
+    .then((listing) => {
+      if (!listing) return res.status(404).json({ error: "Listing not found" });
+      else if (listing.owner && listing.owner.equals(req.user._id)) {
+        return res
+          .status(403)
+          .json({ error: "You cannot book your own listing!" });
       }
       next();
     })
@@ -47,4 +62,10 @@ const saveReturnTo = (req, res, next) => {
   next();
 };
 
-export { isLoggedIn, saveReturnTo, isReviewAuthor, isListingOwner };
+export {
+  isLoggedIn,
+  saveReturnTo,
+  isListingOwner,
+  isReviewAuthor,
+  isNotListingOwner,
+};
