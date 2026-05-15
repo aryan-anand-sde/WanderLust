@@ -5,10 +5,10 @@ import { isLoggedIn, isReviewAuthor } from "../middlewares.js";
 
 const reviewsRouter = express.Router({ mergeParams: true });
 
-reviewsRouter.post("/review", isLoggedIn, WrapAsync(addReview));
+reviewsRouter.post("/", isLoggedIn, WrapAsync(addReview));
 
 reviewsRouter.delete(
-  "/review/:reviewId",
+  "/:reviewId",
   isLoggedIn,
   isReviewAuthor,
   WrapAsync(deleteReview),
