@@ -165,7 +165,7 @@ const Navbar = () => {
                       </Link>
                     ) : (
                       <Link
-                        to="/bookings"
+                        to="/mybookings"
                         className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-blue-50 hover:text-(--color1) rounded-xl transition-colors"
                         onClick={() => setIsProfileOpen(false)}
                       >
