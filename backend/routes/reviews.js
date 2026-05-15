@@ -8,7 +8,7 @@ const reviewsRouter = express.Router({ mergeParams: true });
 reviewsRouter.post("/review", isLoggedIn, WrapAsync(addReview));
 
 reviewsRouter.delete(
-  "/:reviewId",
+  "/review/:reviewId",
   isLoggedIn,
   isReviewAuthor,
   WrapAsync(deleteReview),
