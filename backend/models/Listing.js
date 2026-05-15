@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Review from "./Review.js";
+import Booking from "./Booking.js";
 
 const listingSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -18,9 +19,13 @@ const listingSchema = new mongoose.Schema({
 
 listingSchema.post("findOneAndDelete", async function (listing) {
   if (listing) {
+    // Delete associated reviews
     await Review.deleteMany({
       _id: { $in: listing.reviews },
     });
+
+    // Mark all bookings for this listing as cancelled
+    await Booking.updateMany({ listing: listing._id }, { status: "cancelled" });
   }
 });
 
